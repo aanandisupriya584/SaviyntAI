@@ -1,0 +1,69 @@
+.apex-login {
+  padding-top: 118px;
+  padding-bottom: 124px;
+  background:
+    linear-gradient(#030c1b55, #030c1b77),
+    #060d1a url('/assets/login-security-network.jpeg') center / cover no-repeat !important;
+}
+.apex-login > .login-glow,
+.apex-login > .pointer-events-none { display: none; }
+.apex-login-footer {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 20;
+  padding: 20px 32px;
+  border-top: 1px solid #1b293e;
+  background: #060e1a;
+  color: #94a3b8;
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.7;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .apex-login { padding-bottom: 180px; }
+  .apex-login-footer { padding: 16px 20px; }
+}
+.apex-login-header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 20;
+  min-height: 94px;
+  padding: 23px 56px 23px 29px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: #060e1a;
+  border-bottom: 1px solid #1b293e;
+  font-family: Arial, sans-serif;
+}
+.apex-login-brand, .apex-login-status { display: flex; align-items: center; }
+.apex-login-brand { gap: 16px; }
+.apex-login-brand img { width: 76px; height: 31px; object-fit: contain; flex-shrink: 0; }
+.apex-login-brand-divider { width: 1px; height: 24px; background: #214cb7; }
+.apex-login-name { color: #00c4ef; font-weight: 700; font-size: 18px; line-height: 24px; }
+.apex-login-slash { color: #647080; font-weight: 700; margin-left: 1px; }
+.apex-login-platform { color: #93979f; font-size: 13px; font-weight: 600; margin-left: -8px; }
+.apex-login-status { gap: 8px; }
+.apex-login-status > span {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 6px 10px; border-radius: 20px;
+  font-size: 11px; line-height: 14px; white-space: nowrap;
+}
+.apex-login-secure { color: #00b86a; border: 1px solid #003c30; background: #002b222e; }
+.apex-login-secure > span { font-size: 12px; }
+.apex-login-restricted { color: #858a94; border: 1px solid #303744; background: #ffffff0b; font-weight: 600; }
+.apex-login-restricted svg { width: 12px; height: 12px; }
+@media (max-width: 700px) {
+  .apex-login-header { padding: 20px; gap: 16px; flex-wrap: wrap; }
+  .apex-login-brand { gap: 12px; }
+  .apex-login-platform { font-size: 11px; }
+  .apex-login { padding-top: 158px; }
+}
+@media (max-width: 380px) {
+  .apex-login-brand { gap: 8px; }
+  .apex-login-brand img { width: 64px; }
+  .apex-login-name { font-size: 16px; }
+  .apex-login-platform { font-size: 10px; margin-left: -4px; }
+}
