@@ -213,6 +213,9 @@ for (const [key, filename] of Object.entries(DATA_FILES)) {
       if (key === "users" && Array.isArray(body)) {
         // Load the current on-disk users so we can restore their hashes
         const diskUsers = readJSON(filePath) || [];
+        if (body.length === 0 && diskUsers.length > 0) {
+          return res.status(400).json({ error: "Cannot remove every user account." });
+        }
         const diskMap = Object.fromEntries(diskUsers.map((u) => [u.id, u]));
 
         const _c = require("crypto");
@@ -309,6 +312,23 @@ function checkPassword(plainText, storedHash) {
 }
 
 // POST /api/login — verify username + password, return user object (no hash)
+const loginSessions = new Map();
+function sessionToken(req) {
+  return (req.headers.cookie || "").split(";").map(v => v.trim()).find(v => v.startsWith("onboarder_session="))?.slice(18);
+}
+app.get("/api/session", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  const id = loginSessions.get(sessionToken(req));
+  const user = id && (readJSON(path.join(DATA_DIR, "users.json")) || []).find(u => u.id === id);
+  if (!user) return res.status(401).json({ success: false });
+  const { passwordHash, password, ...safeUser } = user;
+  res.json({ success: true, user: safeUser });
+});
+app.post("/api/logout", (req, res) => {
+  loginSessions.delete(sessionToken(req));
+  res.setHeader("Set-Cookie", "onboarder_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0");
+  res.json({ success: true });
+});
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) {
@@ -323,6 +343,13 @@ app.post("/api/login", (req, res) => {
   if (!valid) {
     return res.status(401).json({ success: false, message: "Invalid username or password" });
   }
+  user.lastLogin = new Date().toISOString();
+  writeJSON(path.join(DATA_DIR, "users.json"), users);
+  const token = require("crypto").randomBytes(32).toString("hex");
+  loginSessions.delete(sessionToken(req));
+  loginSessions.set(token, user.id);
+  res.setHeader("Set-Cookie", `onboarder_session=${token}; HttpOnly; SameSite=Strict; Path=/`);
+  res.setHeader("Cache-Control", "no-store");
   const { passwordHash, password: _pw, ...safeUser } = user;
   return res.json({ success: true, user: safeUser });
 });
