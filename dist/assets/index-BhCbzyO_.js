@@ -26771,7 +26771,7 @@ function ImportPage({ onClose, onImport }) {
                         fontWeight: 600,
                         color: isDark ? "#fff" : "#0f172a"
                       },
-                      children: "Import Applications"
+                      children: "Choose an Import Method"
                     }
                   ),
 
@@ -26852,7 +26852,7 @@ function ImportPage({ onClose, onImport }) {
                             color: isDark ? "#9ca3af" : "#64748b",
                             fontSize: 14
                           },
-                          children: selectedCsv ? selectedCsv.name : "Drag & drop CSV file here"
+                          children: selectedCsv ? selectedCsv.name : "Choose a CSV file or drag it here"
                         }
                       ),
                       /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -31101,10 +31101,10 @@ function Applications({
   const cardBorder = isDark ? "rgba(255,255,255,0.08)" : "#e2e8f0";
   const headingColor = isDark ? "#fff" : "#0f172a";
   const subColor = isDark ? "#6b7280" : "#64748b";
-  const thColor = isDark ? "#4b5563" : "#94a3b8";
+  const thColor = isDark ? "#b0bfd2" : "#52637b";
   const rowBorder = isDark ? "rgba(255,255,255,0.04)" : "#f1f5f9";
   const ownerTextColor = isDark ? "#e5e7eb" : "#374151";
-  const ownerEmailColor = isDark ? "#4b5563" : "#94a3b8";
+  const ownerEmailColor = isDark ? "#94a3b8" : "#52637b";
   const deptTextColor = isDark ? "#9ca3af" : "#64748b";
   const editBtnBg = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
   const editBtnBorder = isDark ? "rgba(255,255,255,0.1)" : "#e2e8f0";
@@ -31226,7 +31226,7 @@ function Applications({
   function bulkAIAssess() {
     onAddToast("Open each app's AI Assessment tab to run analysis", "info");
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { animation: "fadeUp 0.4s ease" }, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "applications-page", style: { animation: "fadeUp 0.4s ease" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginBottom: 20 }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
@@ -31239,8 +31239,8 @@ function Applications({
         },
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 20, fontWeight: 700, color: headingColor }, children: "Applications Registry" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 13, color: subColor }, children: "Manage and track all application onboarding progress" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 20, fontWeight: 700, color: headingColor }, children: "Application Registry" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 13, color: subColor }, children: `${filtered.length} of ${apps.length} applications shown` })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 8, alignItems: "center" }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -31484,6 +31484,8 @@ function Applications({
                 {
                   "data-ocid": `apps.item.${idx + 1}`,
                   className: "row-hover",
+                  "data-status": app.status,
+                  "data-criticality": app.criticality,
                   style: { borderBottom: `1px solid ${rowBorder}` },
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx("td", { style: { padding: "10px 14px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -31578,7 +31580,7 @@ function Applications({
                       {
                         style: {
                           fontSize: 11,
-                          color: isDark ? "#4b5563" : "#94a3b8"
+                          color: isDark ? "#94a3b8" : "#52637b"
                         },
                         children: "No tests"
                       }
@@ -31726,7 +31728,7 @@ function Applications({
                 style: {
                   padding: "40px",
                   textAlign: "center",
-                  color: isDark ? "#4b5563" : "#94a3b8",
+                  color: isDark ? "#94a3b8" : "#52637b",
                   fontSize: 13
                 },
                 children: "No applications match your filters"
@@ -32014,10 +32016,10 @@ function Dashboard({
   const cardBg = isDark ? "rgba(255,255,255,0.04)" : "#ffffff";
   const cardBorder = isDark ? "rgba(255,255,255,0.08)" : "#e2e8f0";
   const headingColor = isDark ? "#fff" : "#0f172a";
-  const subColor = isDark ? "#6b7280" : "#64748b";
+  const subColor = isDark ? "#a5b4c8" : "#52637b";
   const sectionHeadColor = isDark ? "#e5e7eb" : "#374151";
   const labelColor = isDark ? "#9ca3af" : "#64748b";
-  const countColor = isDark ? "#6b7280" : "#94a3b8";
+  const countColor = isDark ? "#a5b4c8" : "#52637b";
   const patternItemBg = isDark ? "rgba(255,255,255,0.03)" : "#f8fafc";
   const patternLabelColor = isDark ? "#e5e7eb" : "#374151";
   const unassessedBarColor = isDark ? "#374151" : "#cbd5e1";
@@ -32030,6 +32032,7 @@ function Dashboard({
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
+      className: "dashboard-content",
       style: {
         display: "flex",
         flexDirection: "column",
@@ -32043,7 +32046,7 @@ function Dashboard({
             {
               label: "Total Apps",
               value: total,
-              icon: "🗂",
+              icon: jsxRuntimeExports.jsx("svg", { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true, children: jsxRuntimeExports.jsx("path", { d: "M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z" }) }),
               subtitle: "All registered applications",
               isDark
             }
@@ -32053,7 +32056,7 @@ function Dashboard({
             {
               label: "Onboarded",
               value: onboarded,
-              icon: "✓",
+              icon: jsxRuntimeExports.jsx("svg", { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true, children: jsxRuntimeExports.jsx("path", { d: "M9 12l2 2 4-5 M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0" }) }),
               subtitle: "Successfully integrated",
               color: "#4ade80",
               isDark
@@ -32064,7 +32067,7 @@ function Dashboard({
             {
               label: "In Progress",
               value: inProgress,
-              icon: "◐",
+              icon: jsxRuntimeExports.jsx("svg", { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true, children: jsxRuntimeExports.jsx("path", { d: "M12 3a9 9 0 1 1-9 9 M12 7v5l3 2 M3 3v5h5" }) }),
               subtitle: "Currently being configured",
               color: "#60a5fa",
               isDark
@@ -32075,7 +32078,7 @@ function Dashboard({
             {
               label: "Not Started",
               value: notStarted,
-              icon: "—",
+              icon: jsxRuntimeExports.jsx("svg", { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true, children: jsxRuntimeExports.jsx("path", { d: "M12 8v4l3 2 M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0" }) }),
               subtitle: "Awaiting initiation",
               color: "#6b7280",
               isDark
@@ -32199,7 +32202,7 @@ function Dashboard({
             }
           )
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "dashboard-insights", style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: CARD_STYLE, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "div",
@@ -32213,7 +32216,8 @@ function Dashboard({
                 children: "Overall Health"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(DonutChart, { apps, isDark })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(DonutChart, { apps, isDark }),
+            jsxRuntimeExports.jsxs("div", { className: "dashboard-health-summary", children: [jsxRuntimeExports.jsx("strong", { children: `${total ? Math.round(onboarded / total * 100) : 0}% onboarded` }), jsxRuntimeExports.jsx("span", { children: `${apps.filter((a) => a.status === "pending").length} pending review | ${inProgress} in progress` })] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: CARD_STYLE, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -32228,7 +32232,7 @@ function Dashboard({
                 children: "Department Progress"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", gap: 10 }, children: DEPARTMENTS.map((dept) => {
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "dashboard-departments", children: DEPARTMENTS.map((dept) => {
               const dApps = apps.filter((a) => a.department === dept);
               if (!dApps.length) return null;
               const avg = Math.round(
@@ -32253,7 +32257,7 @@ function Dashboard({
                     ]
                   }
                 ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { value: avg })
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "department-progress", children: [jsxRuntimeExports.jsx("div", { className: "department-progress-track", role: "progressbar", "aria-label": `${dept} onboarding progress`, "aria-valuenow": avg, "aria-valuemin": 0, "aria-valuemax": 100, children: jsxRuntimeExports.jsx("div", { style: { width: `${avg}%` } }) }), jsxRuntimeExports.jsx("span", { children: `${avg}%` })] })
               ] }, dept);
             }) })
           ] })
@@ -32341,7 +32345,7 @@ function Dashboard({
                           fontSize: 12,
                           fontWeight: 600
                         },
-                        children: "✉ REMIND"
+                        children: "Send reminder"
                       }
                     )
                   ]
@@ -32400,13 +32404,13 @@ function EmailLog({
   const cardBorder = isDark ? "rgba(255,255,255,0.08)" : "#e2e8f0";
   const sectionBorder = isDark ? "rgba(255,255,255,0.06)" : "#f1f5f9";
   const rowBorder = isDark ? "rgba(255,255,255,0.04)" : "#f8fafc";
-  const thColor = isDark ? "#4b5563" : "#94a3b8";
+  const thColor = isDark ? "#a5b4c8" : "#52637b";
   const tdPrimaryColor = isDark ? "#e5e7eb" : "#374151";
   const tdSecondary = isDark ? "#9ca3af" : "#64748b";
-  const tdMuted = isDark ? "#4b5563" : "#94a3b8";
+  const tdMuted = isDark ? "#a5b4c8" : "#52637b";
   const trackerName = isDark ? "#e5e7eb" : "#374151";
-  const trackerDept = isDark ? "#4b5563" : "#94a3b8";
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { animation: "fadeUp 0.4s ease" }, children: [
+  const trackerDept = isDark ? "#a5b4c8" : "#52637b";
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "email-page", style: { animation: "fadeUp 0.4s ease" }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
       {
@@ -32418,7 +32422,7 @@ function EmailLog({
         },
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 20, fontWeight: 700, color: headingColor }, children: "Email Log" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 20, fontWeight: 700, color: headingColor }, children: "Communications Overview" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 13, color: subColor }, children: "Reminder tracking and escalation management" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 8 }, children: [
@@ -32544,6 +32548,7 @@ function EmailLog({
             "div",
             {
               "data-ocid": `email.tracker.item.${idx + 1}`,
+              className: "email-tracker-row",
               style: {
                 padding: "10px 20px",
                 borderBottom: `1px solid ${rowBorder}`,
@@ -32563,7 +32568,7 @@ function EmailLog({
                   ),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, color: trackerDept }, children: app.department })
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(EmailBoxes, { count: Math.min(app.reminders, 5), isDark }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "email-reminder-count", children: [jsxRuntimeExports.jsx("strong", { children: app.reminders }), jsxRuntimeExports.jsx("span", { children: app.reminders === 1 ? "reminder sent" : "reminders sent" })] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 6, marginLeft: "auto" }, children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "button",
@@ -32598,7 +32603,7 @@ function EmailLog({
                         cursor: "pointer",
                         fontSize: 11
                       },
-                      children: "Biz Owner"
+                      children: "Business Owner"
                     }
                   ),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -32647,7 +32652,7 @@ function EmailLog({
                 fontWeight: 600,
                 color: headingColor
               },
-              children: "Email History"
+              children: `Email History (${emails.length})`
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { style: { width: "100%", borderCollapse: "collapse" }, children: [
@@ -32688,6 +32693,7 @@ function EmailLog({
                   "tr",
                   {
                     "data-ocid": `email.history.item.${i + 1}`,
+                    "data-email-type": e.emailType,
                     className: "row-hover",
                     style: { borderBottom: `1px solid ${rowBorder}` },
                     children: [
@@ -33394,7 +33400,7 @@ function IDPSettings() {
     setTimeout(() => setCopied(false), 2e3);
   }
   const fieldsDisabled = !form.enabled;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full space-y-6", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full space-y-6 idp-page settings-page", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-foreground", children: "Enterprise IDP Configuration" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-muted-foreground", children: "Configure your organization's identity provider for single sign-on." })
@@ -36613,7 +36619,7 @@ function SaviyntSettings() {
     };
     await saveSettings(updated);
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full space-y-6", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full space-y-6 eic-page settings-page", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-foreground", children: "Saviynt EIC Instance Configuration" }),
@@ -36671,6 +36677,7 @@ function SaviyntSettings() {
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-foreground font-medium", children: "How EIC instances are used" }),
+        jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground", children: "The primary instance is used for endpoint registration, entitlement creation, and Joiner, Mover, and Leaver testing. The optional secondary instance is used for production promotions." }),
         
         
       ] })
@@ -36855,6 +36862,7 @@ function UserManagement({ apps }) {
             "tr",
             {
               "data-ocid": `user_management.item.${idx + 1}`,
+              "data-user-role": user.role,
               className: `border-b border-border last:border-0 transition-colors hover:bg-white/5 ${isCurrentUser ? "ring-1 ring-inset ring-[#6366f1]/30" : ""}`,
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "px-4 py-3 font-medium text-foreground whitespace-nowrap", children: [
