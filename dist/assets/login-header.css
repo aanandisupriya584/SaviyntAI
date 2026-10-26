@@ -6,16 +6,81 @@
   padding-top: 118px;
   padding-bottom: 124px;
   background:
-    url('/assets/login-network.svg') center / 100% 100% no-repeat,
-    linear-gradient(#149ec012 1px, transparent 1px) center / 44px 44px,
-    linear-gradient(90deg, #149ec012 1px, transparent 1px) center / 44px 44px,
-    linear-gradient(115deg, #0c1029, #0b2035 45%, #10284b) !important;
+    url('/assets/login-network.svg') left center / cover no-repeat,
+    linear-gradient(#1697c014 1px, transparent 1px) left top / 40px 40px,
+    linear-gradient(90deg, #1697c014 1px, transparent 1px) left top / 40px 40px,
+    radial-gradient(ellipse at 34% 90%, #083a5738, transparent 60%),
+    linear-gradient(110deg, #10102b 0%, #091b2b 35%, #102747 100%) !important;
 }
 .apex-login .login-card-anim {
   width: calc(100% - 32px);
   max-width: 448px;
   margin-inline: auto;
   flex-shrink: 0;
+}
+.apex-login .login-card-anim > .rounded-2xl {
+  background: #fff !important;
+  border: 1px solid #e5ecf7 !important;
+  border-top: 3px solid #168aff !important;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 24px 64px #020b2438 !important;
+}
+.apex-login .login-card-anim .text-center { text-align: left; }
+.apex-login .login-card-anim h1 {
+  font-family: Arial, sans-serif !important;
+  color: #102a43 !important;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.apex-login .login-card-anim .text-center > p { color: #64748b !important; line-height: 1.7; font-size: 13px; }
+.apex-login .login-workspace-badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: #315cff;
+  background: #f2f6ff !important;
+  border: 1px solid #dbe6ff !important;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+.apex-login .login-card-anim label { color: #526784 !important; text-transform: uppercase; letter-spacing: .12em; font-size: 10px; }
+.apex-login .login-card-anim input {
+  background: #f7f9fe !important;
+  color: #102a43 !important;
+  border: 1px solid #cfddff !important;
+  border-radius: 12px;
+}
+.apex-login .login-card-anim input:focus { border-color: #2563eb !important; box-shadow: 0 0 0 3px #2563eb15; }
+.apex-login .login-card-anim input::placeholder { color: #8291a8; }
+.apex-login .login-card-anim button[type="submit"] {
+  background: linear-gradient(100deg, #2047df, #073995) !important;
+  border: 1px solid #1444c0;
+  border-radius: 12px;
+  box-shadow: 0 7px 16px #1444c025;
+}
+.apex-login .login-card-anim button[type="submit"]:hover { filter: brightness(1.08); }
+.apex-login .login-card-anim button[type="submit"]:disabled { opacity: .6; }
+.login-app-story { position: relative; z-index: 1; width: 100%; max-width: 530px; color: #b0c4de; }
+.login-story-eyebrow { color: #24caff; font-size: 10px; letter-spacing: .2em; font-weight: 700; }
+.login-app-story h2 { color: #f4f8ff; font-size: clamp(32px, 3.5vw, 48px); line-height: 1.14; font-weight: 700; margin: 16px 0; max-width: 430px; }
+.login-story-description { max-width: 410px; font-size: 14px; line-height: 1.8; }
+.login-feature-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 100px)); gap: 16px; margin-top: 32px; }
+.login-feature-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%; aspect-ratio: 1; padding: 12px; text-align: center; background: #0c233bd9; border: 1px solid #2d607a; border-radius: 50%; box-shadow: 0 0 24px #0ac0ed0a; }
+.login-feature-dot { margin-top: 5px; width: 7px; height: 7px; border-radius: 50%; background: #27c9f4; flex-shrink: 0; box-shadow: 0 0 12px #27c9f466; }
+.login-feature-card:nth-child(2) .login-feature-dot { background: #a78bfa; }
+.login-feature-card:nth-child(3) .login-feature-dot { background: #34d399; }
+.login-feature-card h3 { color: #ecf4ff; font-size: 11px; line-height: 1.4; font-weight: 600; margin: 0; }
+.login-feature-card p { display: none; }
+@media (min-width: 1000px) {
+  .apex-login { flex-direction: row; gap: clamp(48px, 7vw, 120px); padding-inline: 48px; }
+  .apex-login .login-card-anim { width: 100%; max-width: 400px; margin: 0; }
+}
+@media (max-width: 999px) {
+  .login-app-story { text-align: center; padding: 24px 20px 0; margin-bottom: 28px; }
+  .login-app-story h2, .login-story-description { margin-inline: auto; }
+  .login-feature-cards { display: none; }
 }
 .login-bubbles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .login-bubbles i {

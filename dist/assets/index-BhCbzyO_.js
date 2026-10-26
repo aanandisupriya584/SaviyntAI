@@ -22558,14 +22558,13 @@ function CustomIntegrationEndpoints({
             },
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 14 }, children: isDbDriver ? "🗄️" : "🔌" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "span",
                   {
                     style: {
                       fontSize: 13,
                       fontWeight: 700,
-                      color: isDark ? "#fbbf24" : "#b45309"
+                      color: "#000000"
                     },
                     children: [
                       "Custom Integration",
@@ -33905,6 +33904,19 @@ function LoginPage() {
         className: "apex-login relative min-h-screen flex flex-col items-center justify-center overflow-hidden",
         style: { background: "#060d1a" },
         children: [
+          jsxRuntimeExports.jsxs("section", { className: "login-app-story", "aria-label": "Application onboarding features", children: [
+            jsxRuntimeExports.jsx("p", { className: "login-story-eyebrow", children: "IGA ONBOARDING HUB" }),
+            jsxRuntimeExports.jsx("h2", { children: "Assess. Integrate. Onboard." }),
+            jsxRuntimeExports.jsx("p", { className: "login-story-description", children: "Bring application assessment, integration planning, and onboarding progress into one workspace." }),
+            jsxRuntimeExports.jsx("div", { className: "login-feature-cards", children: [
+              ["AI Assessment", "Identify OOTB and custom integration patterns."],
+              ["Lifecycle Testing", "Validate Joiner, Mover, and Leaver operations."],
+              ["Integration Specs", "Upload specifications for review and approval."],
+              ["Onboarding Tracking", "Track application progress, reminders, and escalations."]
+            ].map(([title, description]) => jsxRuntimeExports.jsxs("div", { className: "login-feature-card", children: [
+              jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { children: title }), jsxRuntimeExports.jsx("p", { children: description })] })
+            ] }, title)) })
+          ] }),
           jsxRuntimeExports.jsx("div", { className: "login-bubbles", "aria-hidden": true, children: Array.from({ length: 12 }, (_, i) => jsxRuntimeExports.jsx("i", { style: { "--x": `${(i * 29 + 7) % 100}%`, "--size": `${22 + i % 5 * 18}px`, "--delay": `${-i * 2.7}s`, "--duration": `${12 + i % 4 * 3}s` } }, i)) }),
           jsxRuntimeExports.jsx("footer", { className: "apex-login-footer", children: "\u00A9 2026 KPMG Assurance and Consulting Services LLP, an Indian Limited Liability Partnership and a member firm of the KPMG global organization of independent member firms affiliated with KPMG International Limited, a private English company limited by guarantee. All rights reserved." }),
           jsxRuntimeExports.jsxs("header", { className: "apex-login-header", children: [
@@ -33959,12 +33971,12 @@ function LoginPage() {
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
                           "div",
                           {
-                            className: "inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4",
+                            className: "login-workspace-badge inline-flex items-center justify-center mb-4",
                             style: {
                               background: "rgba(99,102,241,0.15)",
                               border: "1px solid rgba(99,102,241,0.3)"
                             },
-                            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#818cf8" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(LockIcon, {}) })
+                            children: "IGA WORKSPACE"
                           }
                         ),
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -33975,10 +33987,10 @@ function LoginPage() {
                               fontFamily: "'IBM Plex Mono', monospace",
                               color: "#e2e8f0"
                             },
-                            children: "Saviynt"
+                            children: "Sign In"
                           }
                         ),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "#94a3b8" }, children: "IGA Application Onboarding Platform" })
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "#94a3b8" }, children: "Access your application onboarding workspace. Authorised users only." })
                       ] }),
                       mode === "password" && /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handlePasswordSubmit, noValidate: true, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
