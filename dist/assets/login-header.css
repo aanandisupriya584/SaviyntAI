@@ -6,7 +6,6 @@
   padding-top: 118px;
   padding-bottom: 124px;
   background:
-    url('/assets/login-network.svg') left center / cover no-repeat,
     linear-gradient(#1697c014 1px, transparent 1px) left top / 40px 40px,
     linear-gradient(90deg, #1697c014 1px, transparent 1px) left top / 40px 40px,
     radial-gradient(ellipse at 34% 90%, #083a5738, transparent 60%),

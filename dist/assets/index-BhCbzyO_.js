@@ -22700,7 +22700,7 @@ function CustomIntegrationEndpoints({
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   GroupHeader,
                   {
-                    icon: "👁️",
+                    icon: "",
                     label: "Read Operations",
                     color: isDark ? "#60a5fa" : "#2563eb"
                   }
@@ -22711,9 +22711,9 @@ function CustomIntegrationEndpoints({
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   GroupHeader,
                   {
-                    icon: "✏️",
+                    icon: "",
                     label: "Write Operations",
-                    color: isDark ? "#f87171" : "#dc2626"
+                    color: isDark ? "#60a5fa" : "#2563eb"
                   }
                 ),
                 renderSpGroup(writeOps)
@@ -22726,7 +22726,7 @@ function CustomIntegrationEndpoints({
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   GroupHeader,
                   {
-                    icon: "👁️",
+                    icon: "",
                     label: "Read Operations",
                     color: isDark ? "#60a5fa" : "#2563eb"
                   }
@@ -22737,9 +22737,9 @@ function CustomIntegrationEndpoints({
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   GroupHeader,
                   {
-                    icon: "✏️",
+                    icon: "",
                     label: "Write Operations",
-                    color: isDark ? "#f87171" : "#dc2626"
+                    color: isDark ? "#60a5fa" : "#2563eb"
                   }
                 ),
                 renderApiGroup(writeOps)
@@ -23517,7 +23517,7 @@ function AdditionalNotesSection({
                 alignItems: "center",
                 gap: 6
               },
-              children: "📝 Additional Notes"
+              children: "Additional Notes"
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 11, color: dimColor, lineHeight: 1.5 }, children: "Provide any rules, business logic, or requirements for user account management and onboarding (e.g. “Accounts created only after HR update”, “Leaver requires 24-hour notice”)." })
@@ -23572,7 +23572,10 @@ function SchemaTab({
           gap: 12
         },
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 36 }, children: "🔍" }),
+          jsxRuntimeExports.jsxs("svg", { width: 36, height: 36, viewBox: "0 0 24 24", fill: "none", stroke: dimColor, strokeWidth: 1.8, strokeLinecap: "round", "aria-hidden": true, children: [
+            jsxRuntimeExports.jsx("circle", { cx: 10.5, cy: 10.5, r: 6.5 }),
+            jsxRuntimeExports.jsx("path", { d: "m16 16 4 4" })
+          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 14, fontWeight: 600, color: textColor }, children: "Run AI Assessment First" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: 12, color: dimColor, maxWidth: 340 }, children: "Schema attributes will be automatically populated based on the connector identified by the AI Assessment. Go to the AI Assessment tab to run the analysis." })
         ]
@@ -26695,7 +26698,7 @@ const PROTOCOLS = [
   "Active Directory (AD)",
   "Azure Active Directory (Azure AD)"
 ];
-function ImportModal({ onClose, onImport }) {
+function ImportPage({ onClose, onImport }) {
   const csvInputRef = reactExports.useRef(null);
   const [selectedCsv, setSelectedCsv] = reactExports.useState(null);
   const selectCsv = (file) => {
@@ -26735,23 +26738,7 @@ function ImportModal({ onClose, onImport }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     "div",
     {
-      style: {
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.7)",
-        zIndex: 1e3,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 24
-      },
-      onClick: (e) => {
-        if (e.target === e.currentTarget) onClose();
-      },
-      onKeyDown: (e) => {
-        if (e.key === "Escape") onClose();
-      },
-      role: "presentation",
+      className: "import-page",
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
@@ -26760,8 +26747,8 @@ function ImportModal({ onClose, onImport }) {
             border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #e2e8f0",
             borderRadius: 12,
             width: "100%",
-            maxWidth: 560,
-            maxHeight: "80vh",
+            maxWidth: "100%",
+            minHeight: 400,
             overflow: "auto"
           },
           children: [
@@ -26784,26 +26771,10 @@ function ImportModal({ onClose, onImport }) {
                         fontWeight: 600,
                         color: isDark ? "#fff" : "#0f172a"
                       },
-                      children: "📥 Import Applications"
+                      children: "Import Applications"
                     }
                   ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      "data-ocid": "import.close_button",
-                      onClick: onClose,
-                      style: {
-                        background: "none",
-                        border: "none",
-                        color: "#6b7280",
-                        cursor: "pointer",
-                        fontSize: 20
-                      },
-                      "aria-label": "Close",
-                      children: "×"
-                    }
-                  )
+
                 ]
               }
             ),
@@ -32159,8 +32130,6 @@ function Dashboard({
                 flex: 1,
                 background: isDark ? "rgba(255,255,255,0.04)" : "#ffffff",
                 border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "#e2e8f0"}`,
-                borderTop: `3px solid ${color}`,
-                borderLeft: `3px solid ${color}`,
                 borderRadius: 12,
                 boxShadow: isDark ? "none" : "0 3px 12px #14345908",
                 padding: "12px 14px"
@@ -32175,8 +32144,8 @@ function Dashboard({
                       alignItems: "flex-start"
                     },
                     children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 22, fontWeight: 700, color }, children: count }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color, fontSize: 18 }, children: icon })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 22, fontWeight: 700, color: patternLabelColor }, children: count }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: subColor, fontSize: 18 }, children: icon })
                     ]
                   }
                 ),
@@ -32186,7 +32155,7 @@ function Dashboard({
                     style: {
                       fontSize: 11,
                       fontWeight: 600,
-                      color,
+                      color: patternLabelColor,
                       marginTop: 4
                     },
                     children: label
@@ -33425,7 +33394,7 @@ function IDPSettings() {
     setTimeout(() => setCopied(false), 2e3);
   }
   const fieldsDisabled = !form.enabled;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-2xl mx-auto space-y-6 py-8 px-4", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full space-y-6", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-foreground", children: "Enterprise IDP Configuration" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-muted-foreground", children: "Configure your organization's identity provider for single sign-on." })
@@ -33917,7 +33886,6 @@ function LoginPage() {
               jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { children: title }), jsxRuntimeExports.jsx("p", { children: description })] })
             ] }, title)) })
           ] }),
-          jsxRuntimeExports.jsx("div", { className: "login-bubbles", "aria-hidden": true, children: Array.from({ length: 12 }, (_, i) => jsxRuntimeExports.jsx("i", { style: { "--x": `${(i * 29 + 7) % 100}%`, "--size": `${22 + i % 5 * 18}px`, "--delay": `${-i * 2.7}s`, "--duration": `${12 + i % 4 * 3}s` } }, i)) }),
           jsxRuntimeExports.jsx("footer", { className: "apex-login-footer", children: "\u00A9 2026 KPMG Assurance and Consulting Services LLP, an Indian Limited Liability Partnership and a member firm of the KPMG global organization of independent member firms affiliated with KPMG International Limited, a private English company limited by guarantee. All rights reserved." }),
           jsxRuntimeExports.jsxs("header", { className: "apex-login-header", children: [
             jsxRuntimeExports.jsxs("div", { className: "apex-login-brand", children: [
@@ -36645,7 +36613,7 @@ function SaviyntSettings() {
     };
     await saveSettings(updated);
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-2xl mx-auto space-y-6 py-8 px-4", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full space-y-6", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-foreground", children: "Saviynt EIC Instance Configuration" }),
@@ -36836,7 +36804,7 @@ function UserManagement({ apps }) {
       assignedAppIds: prev.assignedAppIds.includes(appId) ? prev.assignedAppIds.filter((a) => a !== appId) : [...prev.assignedAppIds, appId]
     }));
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { "data-ocid": "user_management.page", className: "p-6 space-y-6", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { "data-ocid": "user_management.page", className: "w-full space-y-6", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-semibold text-foreground", children: "User Management" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm", children: "Manage user accounts, roles, and application ownership." })
@@ -37453,6 +37421,7 @@ function AppInner() {
   const [sidebarCollapsed, setSidebarCollapsed] = reactExports.useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = reactExports.useState(false);
   const sidebarPages = {
+    import: ["Import Applications", "Add applications using CSV upload, CMDB sync, or manual entry.", "M12 15V3m-5 5 5-5 5 5 M4 16v5h16v-5"],
     dashboard: ["Dashboard", "Overview of application onboarding and integration progress.", "M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"],
     applications: ["Applications", "Manage applications and track their onboarding progress.", "M4 4h16v16H4z M4 9h16 M9 9v11"],
     email: ["Email Log", "Review onboarding communications and reminders.", "M3 5h18v14H3z M3 5l9 7 9-7"],
@@ -37481,7 +37450,7 @@ function AppInner() {
   const [currentView, setCurrentView] = reactExports.useState(() => {
     try {
       const savedView = sessionStorage.getItem(viewStorageKey);
-      const adminPage = ["user_management", "idp_settings", "saviynt_settings"].includes(savedView);
+      const adminPage = ["user_management", "idp_settings", "saviynt_settings", "import"].includes(savedView);
       return Object.hasOwn(sidebarPages, savedView) && (!adminPage || currentUser?.role === "admin") ? savedView : "dashboard";
     } catch {
       return "dashboard";
@@ -37493,7 +37462,7 @@ function AppInner() {
       if (restoredViewKey.current !== viewStorageKey) {
         restoredViewKey.current = viewStorageKey;
         const savedView = sessionStorage.getItem(viewStorageKey);
-        const adminPage = ["user_management", "idp_settings", "saviynt_settings"].includes(savedView);
+        const adminPage = ["user_management", "idp_settings", "saviynt_settings", "import"].includes(savedView);
         if (Object.hasOwn(sidebarPages, savedView) && (!adminPage || currentUser.role === "admin")) {
           setCurrentView(savedView);
           return;
@@ -37524,7 +37493,7 @@ function AppInner() {
       else sessionStorage.removeItem(key);
     } catch {}
   }, [currentUser, dataLoaded, viewStorageKey, apps, editingApp, editingTab]);
-  const [showImportModal, setShowImportModal] = reactExports.useState(false);
+
   const [emails, setEmails] = reactExports.useState([]);
   const [showChangePw, setShowChangePw] = reactExports.useState(false);
   const [cpCurrentPw, setCpCurrentPw] = reactExports.useState("");
@@ -37928,7 +37897,7 @@ function AppInner() {
                 currentUser.role === "admin" && NAV_BTN("idp_settings", "🔐 IDP Settings"),
                 currentUser.role === "admin" && NAV_BTN("saviynt_settings", "⚙️ EIC Settings"),
                 jsxRuntimeExports.jsxs("button", { type: "button", className: "sidebar-action", "data-ocid": "nav.export_json_button", title: "Export", "aria-label": "Export", onClick: handleExportJSON, children: [jsxRuntimeExports.jsx("svg", { className: "sidebar-page-icon", width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true, children: jsxRuntimeExports.jsx("path", { d: "M12 3v12m-5-5 5 5 5-5 M4 16v5h16v-5" }) }), jsxRuntimeExports.jsx("span", { className: "sidebar-page-label", children: "Export" })] }),
-                currentUser.role === "admin" && jsxRuntimeExports.jsxs("button", { type: "button", className: "sidebar-action", "data-ocid": "nav.import_button", title: "Import Apps", "aria-label": "Import Apps", onClick: () => setShowImportModal(true), children: [jsxRuntimeExports.jsx("svg", { className: "sidebar-page-icon", width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true, children: jsxRuntimeExports.jsx("path", { d: "M12 15V3m-5 5 5-5 5 5 M4 16v5h16v-5" }) }), jsxRuntimeExports.jsx("span", { className: "sidebar-page-label", children: "Import Apps" })] })
+                currentUser.role === "admin" && jsxRuntimeExports.jsxs("button", { type: "button", className: "sidebar-action", "data-ocid": "nav.import_button", title: "Import", "aria-label": "Import", "aria-current": currentView === "import" ? "page" : void 0, onClick: () => setCurrentView("import"), children: [jsxRuntimeExports.jsx("svg", { className: "sidebar-page-icon", width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true, children: jsxRuntimeExports.jsx("path", { d: "M12 15V3m-5 5 5-5 5 5 M4 16v5h16v-5" }) }), jsxRuntimeExports.jsx("span", { className: "sidebar-page-label", children: "Import" })] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "div",
@@ -38067,6 +38036,7 @@ function AppInner() {
             }
           ),
           
+          currentView === "import" && jsxRuntimeExports.jsx(RoleGuard, { allowedRoles: ["admin"], children: jsxRuntimeExports.jsx(ImportPage, { onClose: () => setCurrentView("applications"), onImport: handleImportWithOwner }) }),
           currentView === "user_management" && /* @__PURE__ */ jsxRuntimeExports.jsx(RoleGuard, { allowedRoles: ["admin"], children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserManagement, { apps }) }),
           currentView === "idp_settings" && /* @__PURE__ */ jsxRuntimeExports.jsx(RoleGuard, { allowedRoles: ["admin"], children: /* @__PURE__ */ jsxRuntimeExports.jsx(IDPSettings, {}) }),
           currentView === "saviynt_settings" && /* @__PURE__ */ jsxRuntimeExports.jsx(RoleGuard, { allowedRoles: ["admin"], children: /* @__PURE__ */ jsxRuntimeExports.jsx(SaviyntSettings, {}) })
@@ -38079,13 +38049,6 @@ function AppInner() {
             onTabChange: setEditingTab,
             onClose: () => setEditingApp(null),
             onUpdate: handleModalUpdate
-          }
-        ),
-        showImportModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          ImportModal,
-          {
-            onClose: () => setShowImportModal(false),
-            onImport: handleImportWithOwner
           }
         ),
         showChangePw && currentUser && /* @__PURE__ */ jsxRuntimeExports.jsx(
