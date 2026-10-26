@@ -1,0 +1,17 @@
+{
+  "name": "saviynt-onboarder",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "setup": "npm ci --prefix server && npm ci --prefix frontend",
+    "dev": "node scripts/dev.cjs",
+    "build": "npm run build --prefix frontend",
+    "start": "node server/server.cjs",
+    "test": "playwright test",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down"
+  },
+  "engines": { "node": ">=22.12.0" },
+  "devDependencies": { "@playwright/test": "^1.56.0" }
+}

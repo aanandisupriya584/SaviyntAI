@@ -1,7 +1,6 @@
 /**
  * Saviynt AI Onboarder — Local Windows Server
- * Development mode: ROOT_DIR = project root, dist at src/frontend/dist/
- * Deployed zip mode: ROOT_DIR = folder containing server/, dist at dist/
+ * React source: frontend/src/. Production assets: frontend/dist/.
  */
 "use strict";
 
@@ -30,20 +29,17 @@ const app = express();
 const SERVER_DIR = __dirname;
 const ROOT_DIR   = path.resolve(SERVER_DIR, "..");
 
-// dist/ lives at ROOT_DIR/src/frontend/dist in dev,
-// or ROOT_DIR/dist in the deployed zip.
+// The frontend build is served by Express in both local and Docker deployments.
 function resolveDist() {
-  const zipDist = path.join(ROOT_DIR, "dist");
-  const devDist = path.join(ROOT_DIR, "src", "frontend", "dist");
-  if (fs.existsSync(zipDist) && fs.existsSync(path.join(zipDist, "index.html"))) return zipDist;
-  if (fs.existsSync(devDist) && fs.existsSync(path.join(devDist, "index.html"))) return devDist;
-  return zipDist; // fallback — show "not built" message
+  return process.env.DIST_DIR
+    ? path.resolve(process.env.DIST_DIR)
+    : path.join(ROOT_DIR, "frontend", "dist");
 }
 
 const DIST_DIR = resolveDist();
-const DATA_DIR = path.join(ROOT_DIR, "data");
-const DOCS_DIR = path.join(ROOT_DIR, "documents");
-const LOGS_DIR = path.join(ROOT_DIR, "logs");
+const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(ROOT_DIR, "data"));
+const DOCS_DIR = path.resolve(process.env.DOCS_DIR || path.join(ROOT_DIR, "documents"));
+const LOGS_DIR = path.resolve(process.env.LOGS_DIR || path.join(ROOT_DIR, "logs"));
 
 console.log(`[server] ROOT : ${ROOT_DIR}`);
 console.log(`[server] DIST : ${DIST_DIR}`);
@@ -58,7 +54,7 @@ function makeDefaultUsers() {
     {
       id:            "admin-001",
       username:      "admin",
-      passwordHash:  "admin123",   // migrated to pbkdf2/bcrypt on first boot
+      passwordHash:  process.env.INITIAL_ADMIN_PASSWORD || "admin123", // hashed on first boot
       role:          "admin",
       name:          "Administrator",
       email:         "admin@company.com",
@@ -164,6 +160,10 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json({ limit: "50mb" }));
+app.get("/api/health", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.json({ status: "ok" });
+});
 
 // ─── Multer for file uploads ──────────────────────────────────────────────────
 const upload = multer({
@@ -432,49 +432,6 @@ app.get("/api/documents/:filename", (req, res) => {
 
 // ─── Download full package as zip ─────────────────────────────────────────────
 //
-// Strategy: buffer the entire zip in memory before sending.  This lets us
-// catch any archiver error before a single byte is written to the HTTP
-// response — the client either gets a valid 200 + complete zip, or a clean
-// 500 JSON error.  No truncated / corrupt downloads.
-//
-// GENERATED start.bat content (used if file is not found on disk)
-const GENERATED_START_BAT = `@echo off
-echo Starting Saviynt AI Onboarder...
-where node >nul 2>nul
-if %errorlevel% neq 0 (
-    echo ERROR: Node.js is not installed.
-    echo Please download and install Node.js from https://nodejs.org/
-    echo Then run this file again.
-    pause
-    exit /b 1
-)
-cd /d "%~dp0"
-echo Installing / updating server dependencies (including bcryptjs)...
-cd server
-npm install
-cd ..
-echo Starting server...
-start "" http://localhost:3000
-node server\\server.cjs
-pause
-`;
-
-// GENERATED README content (used if file is not found on disk)
-const GENERATED_README = `# Saviynt AI Onboarder - Windows Setup
-
-1. Install Node.js from https://nodejs.org/ (LTS version)
-2. Extract this zip to a folder (e.g. C:\\SaviyntOnboarder\\)
-3. Double-click start.bat to launch the app
-   (start.bat runs "npm install" automatically, which installs bcryptjs and all dependencies)
-4. Open http://localhost:3000 in your browser
-   Default login: admin / admin123
-
-Passwords are stored as bcrypt hashes — plain-text passwords are automatically migrated
-on first run. Use the Change Password feature in the app to update passwords.
-
-Your data is stored in the data/ folder alongside the app.
-`;
-
 // ─── /api/download-package — REMOVED ─────────────────────────────────────────
 // Download package feature has been removed. Route returns 410 Gone.
 app.get("/api/download-package", (req, res) => {
@@ -1786,37 +1743,33 @@ if (fs.existsSync(DIST_DIR) && fs.existsSync(path.join(DIST_DIR, "index.html")))
     res.send(`<html><body style="font-family:sans-serif;padding:40px;background:#0d1424;color:#e5e7eb">
       <h2>&#9889; Saviynt AI Onboarder &#8212; Server Running</h2>
       <p style="color:#f87171">&#9888; No built frontend found at <code>${DIST_DIR}</code>.</p>
-      <p>Run <code>pnpm build</code> inside <code>src/frontend/</code> first, then restart this server.</p>
+      <p>Run <code>npm run build</code> in the project root first, then restart this server.</p>
     </body></html>`);
   });
 }
 
-// ─── Start on port 3000, fallback 3001 ───────────────────────────────────────
-const PORT_PRIMARY  = 3000;
-const PORT_FALLBACK = 3001;
-
+// ─── Configurable HTTP listener ───────────────────────────────────────
+const PORT = Number(process.env.PORT || 3003);
+const HOST = process.env.HOST || "127.0.0.1";
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+  throw new Error("PORT must be an integer between 1 and 65535");
+}
 const server = http.createServer(app);
-
-server.listen(PORT_PRIMARY, "127.0.0.1", () => {
-  console.log("");
-  console.log("\u2554" + "\u2550".repeat(50) + "\u2557");
-  console.log("\u2551   \u26A1  Saviynt AI Onboarder  \u2014  Local Server       \u2551");
-  console.log("\u2560" + "\u2550".repeat(50) + "\u2563");
-  console.log(`\u2551   URL : http://localhost:${PORT_PRIMARY}                     \u2551`);
-  console.log(`\u2551   Data: ${path.relative(process.cwd(), DATA_DIR).padEnd(40)} \u2551`);
-  console.log("\u2551   Login: admin / admin123                        \u2551");
-  console.log("\u2551   Logs : logs\\ folder (onboarding logs)          \u2551");
-  console.log("\u255A" + "\u2550".repeat(50) + "\u255D");
-  console.log("");
-}).on("error", (err) => {
-  if (err.code === "EADDRINUSE") {
-    server.listen(PORT_FALLBACK, "127.0.0.1", () => {
-      console.log("");
-      console.log(`\u26A1 Saviynt AI Onboarder running on http://localhost:${PORT_FALLBACK}`);
-      console.log(`   (Port ${PORT_PRIMARY} was busy \u2014 using ${PORT_FALLBACK} instead)`);
-      console.log("");
-    });
-  } else {
-    throw err;
-  }
+server.listen(PORT, HOST, () => {
+  console.log(`Saviynt AI Onboarder running at http://localhost:${PORT}`);
+  console.log(`Listening on ${HOST}:${PORT}`);
 });
+server.on("error", (err) => {
+  console.error(`Cannot start server on ${HOST}:${PORT}: ${err.message}`);
+  process.exitCode = 1;
+});
+let shuttingDown = false;
+function shutdown(signal) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  console.log(`${signal}: shutting down HTTP server`);
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(1), 10000).unref();
+}
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));

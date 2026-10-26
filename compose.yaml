@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+      target: runtime
+    image: saviynt-onboarder:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3003}:3003"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3003"
+      INITIAL_ADMIN_PASSWORD: "${INITIAL_ADMIN_PASSWORD:?Set INITIAL_ADMIN_PASSWORD in .env before starting Docker}"
+    volumes:
+      - app-data:/app/data
+      - app-documents:/app/documents
+      - app-logs:/app/logs
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  app-data:
+  app-documents:
+  app-logs:

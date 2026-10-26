@@ -1,0 +1,26 @@
+name: Build and regression checks
+on:
+  push:
+    branches: [Dev]
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+            server/package-lock.json
+      - run: npm ci
+      - run: npm run setup
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+        env:
+          PLAYWRIGHT_CHANNEL: chromium
+      - run: docker build --target runtime -t saviynt-onboarder:ci .
