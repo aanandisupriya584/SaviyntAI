@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" fill="none">
+  <defs>
+    <radialGradient id="halo"><stop stop-color="#00bde9" stop-opacity=".15"/><stop offset="1" stop-color="#00bde9" stop-opacity="0"/></radialGradient>
+  </defs>
+  <style>
+    .network-traveler { offset-rotate: 0deg; animation: travel var(--duration, 18s) linear infinite; }
+    @keyframes travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+    @media (prefers-reduced-motion: reduce) { .network-traveler { animation: none; opacity: 0; } }
+  </style>
+  <g transform="translate(-35 0)">
+  <ellipse cx="390" cy="460" rx="480" ry="450" fill="url(#halo)"/>
+  <g stroke="#079dcc" stroke-opacity=".29" stroke-width="4" stroke-dasharray="13 15">
+    <path d="M70-30 120 270 40 560 220 830 345 410 120 270 400 110 570 280 345 410 620 610 570 280 760 60"/>
+    <path d="M220 830 620 610 730 900M345 410 420 900M40 560 345 410M400 110 345 410M620 610 835 390 570 280"/>
+    <path d="M835 390 1030 200 1240 410 1400 100M835 390 1060 770 1240 410 1480 670" stroke-opacity=".35"/>
+  </g>
+  <g fill="#00b4df" fill-opacity=".13" stroke="#22b9e0" stroke-opacity=".17">
+    <circle cx="120" cy="270" r="25"/><circle cx="40" cy="560" r="39"/>
+    <circle cx="345" cy="410" r="58"/><circle cx="620" cy="610" r="30"/>
+    <circle cx="835" cy="390" r="17"/>
+  </g>
+  <g fill="#09b880" fill-opacity=".18"><circle cx="220" cy="830" r="40"/><circle cx="400" cy="110" r="18"/></g>
+  <circle cx="570" cy="280" r="22" fill="#793bea" fill-opacity=".24"/>
+  <g stroke="#0ac2ed" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".65">
+    <rect x="327" y="405" width="36" height="29" rx="5"/>
+    <path d="M334 405v-10a11 11 0 0 1 22 0v10"/>
+  </g>
+  <g fill="#30c8ee" fill-opacity=".6">
+    <circle cx="120" cy="270" r="4"/><circle cx="620" cy="610" r="4"/>
+    <circle cx="400" cy="110" r="3"/><circle cx="835" cy="390" r="3"/>
+  </g>
+  <g fill="#39d4f4">
+    <g class="network-traveler" style="offset-path:path('M120 270 345 410 620 610 835 390 570 280 400 110 120 270');--duration:24s">
+      <circle r="13" opacity=".08"/><circle r="6" opacity=".3"/><circle r="2.5" opacity=".85"/>
+    </g>
+    <g class="network-traveler" style="offset-path:path('M40 560 220 830 345 410 570 280 760 60');--duration:19s;animation-delay:-8s">
+      <circle r="11" opacity=".1"/><circle r="5" opacity=".35"/><circle r="2" opacity=".9"/>
+    </g>
+    <g class="network-traveler" style="offset-path:path('M70 -30 120 270 40 560 345 410 420 900');--duration:28s;animation-delay:-15s">
+      <circle r="16" opacity=".07"/><circle r="7" opacity=".2"/><circle r="3" opacity=".7"/>
+    </g>
+  </g>
+  </g>
+</svg>
