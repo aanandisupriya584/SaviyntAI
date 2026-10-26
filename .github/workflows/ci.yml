@@ -1,7 +1,7 @@
 name: Build and regression checks
 on:
   push:
-    branches: [frontend-changes]
+    branches: [Dev]
   pull_request:
 jobs:
   verify:

@@ -11,7 +11,7 @@ React frontend with an Express API. The application runs at **http://localhost:3
 ## Run after cloning
 
 ```sh
-git clone --branch frontend-changes https://github.com/aanandisupriya584/SaviyntAI.git
+git clone --branch Dev https://github.com/aanandisupriya584/SaviyntAI.git
 cd SaviyntAI
 npm ci
 npm run setup

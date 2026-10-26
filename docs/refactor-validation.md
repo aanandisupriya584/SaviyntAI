@@ -1,6 +1,6 @@
 # Frontend restructuring validation
 
-Validated on 26 October 2026 on `frontend-changes`, branched from `UAT`.
+Validated on 26 October 2026 on `Dev` (originally `frontend-changes`), branched from `UAT`.
 
 ## Behavior preservation
 
