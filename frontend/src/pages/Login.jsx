@@ -76,43 +76,19 @@ function LoginPage() {
           background: "#060d1a",
         }}
       >
-        <section
-          className={"login-app-story"}
-          aria-label={"Application onboarding features"}
-        >
-          <p className={"login-story-eyebrow"}>{"IGA ONBOARDING HUB"}</p>
-          <h2>{"Assess. Integrate. Onboard."}</h2>
-          <p className={"login-story-description"}>
-            {
-              "Bring application assessment, integration planning, and onboarding progress into one workspace."
-            }
-          </p>
-          <div className={"login-feature-cards"}>
-            {[
-              [
-                "AI Assessment",
-                "Identify OOTB and custom integration patterns.",
-              ],
-              [
-                "Lifecycle Testing",
-                "Validate Joiner, Mover, and Leaver operations.",
-              ],
-              [
-                "Integration Specs",
-                "Upload specifications for review and approval.",
-              ],
-              [
-                "Onboarding Tracking",
-                "Track application progress, reminders, and escalations.",
-              ],
-            ].map(([title, description]) => (
-              <div className={"login-feature-card"} key={title}>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{description}</p>
-                </div>
-              </div>
-            ))}
+        <section className="login-app-story" aria-label="Application onboarding features">
+          <div className="login-story-copy">
+            <p className="login-story-eyebrow">IGA ONBOARDING HUB</p>
+            <h2>Assess. Integrate. Onboard.</h2>
+            <p className="login-story-description">
+              Bring application assessment, integration planning, and onboarding progress into one workspace.
+            </p>
+          </div>
+          <div className="login-onboarding-art">
+            <img
+              src="/assets/login-onboarding-illustration.png"
+              alt="Connected cloud, identity, application and database systems around an onboarding hub"
+            />
           </div>
         </section>
         <footer className={"apex-login-footer"}>
@@ -149,21 +125,6 @@ function LoginPage() {
           </div>
         </header>
         <div
-          className={"login-glow pointer-events-none absolute inset-0"}
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.22) 0%, transparent 70%)",
-          }}
-        />
-        <div
-          className={"pointer-events-none absolute inset-0 opacity-[0.04]"}
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(148,163,184,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,0.6) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
-        <div
           className={`login-card-anim relative z-10 w-full max-w-md mx-4 ${shake ? "login-shake" : ""}`}
         >
           <div
@@ -195,7 +156,7 @@ function LoginPage() {
                   color: "#e2e8f0",
                 }}
               >
-                {"Sign In"}
+                {"Welcome back"}
               </h1>
               <p
                 className={"text-sm"}
@@ -204,9 +165,13 @@ function LoginPage() {
                 }}
               >
                 {
-                  "Access your application onboarding workspace. Authorised users only."
+                  "Sign in to your application onboarding workspace."
                 }
               </p>
+            </div>
+            <div className="login-auth-tabs" aria-label="Sign-in method">
+              <button type="button" aria-pressed={mode === "password"} onClick={() => switchMode("password")} disabled={loading}>Password</button>
+              <button type="button" aria-pressed={mode === "idp"} onClick={() => switchMode("idp")} disabled={loading}>Single sign-on</button>
             </div>
             {mode === "password" && (
               <form onSubmit={handlePasswordSubmit} noValidate={true}>
@@ -484,49 +449,6 @@ function LoginPage() {
                   </button>
                 </div>
               </form>
-            )}
-            {mode === "password" && (
-              <div className={"mt-6 text-center"}>
-                <div className={"flex items-center gap-3 mb-4"}>
-                  <div
-                    className={"flex-1 h-px"}
-                    style={{
-                      background: "rgba(255,255,255,0.07)",
-                    }}
-                  />
-                  <span
-                    className={"text-xs"}
-                    style={{
-                      color: "#475569",
-                    }}
-                  >
-                    {"or"}
-                  </span>
-                  <div
-                    className={"flex-1 h-px"}
-                    style={{
-                      background: "rgba(255,255,255,0.07)",
-                    }}
-                  />
-                </div>
-                <button
-                  type={"button"}
-                  className={"text-sm transition-colors font-medium"}
-                  style={{
-                    color: "#818cf8",
-                  }}
-                  onClick={() => switchMode("idp")}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "#a5b4fc";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "#818cf8";
-                  }}
-                  data-ocid={"login.use_idp.button"}
-                >
-                  {"Sign in with enterprise IDP →"}
-                </button>
-              </div>
             )}
           </div>
         </div>
