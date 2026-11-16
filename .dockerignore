@@ -1,0 +1,14 @@
+.git
+**/node_modules
+**/dist
+data
+documents
+logs
+test-results
+playwright-report
+.env
+.env.*
+!*.example
+**/*.log
+tests
+README*

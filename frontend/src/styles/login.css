@@ -1,0 +1,403 @@
+.apex-login {
+  font-family:Arial,sans-serif;
+  display:grid;
+  grid-template-columns:minmax(0,58fr) minmax(0,42fr);
+  grid-template-rows:auto 1fr auto;
+  align-items:stretch;
+  min-height:100dvh;
+  background:#00162b!important;
+  overflow:hidden
+}
+
+.apex-login-header {
+  grid-column:1/-1;
+  grid-row:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:22px 32px;
+  background:#060e1a;
+  border-bottom:1px solid #1b293e
+}
+
+.apex-login-brand,.apex-login-status {
+  display:flex;
+  align-items:center;
+  gap:14px
+}
+.apex-login-brand img {
+  width:76px;
+  height:31px;
+  object-fit:contain;
+  flex-shrink:0
+}
+.apex-login-brand-divider {
+  width:1px;
+  height:24px;
+  background:#214cb7
+}
+.apex-login-name {
+  color:#00c4ef;
+  font-size:18px;
+  font-weight:700
+}
+.apex-login-slash {
+  color:#647080
+}
+.apex-login-platform {
+  color:#b7c3d3;
+  font-size:13px
+}
+.apex-login-status {
+  gap:8px
+}
+.apex-login-status>span {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:11px;
+  white-space:nowrap
+}
+.apex-login-secure {
+  color:#35d797;
+  border:1px solid #185342
+}
+.apex-login-secure>span {
+  width:5px;
+  height:5px;
+  background:currentColor;
+  border-radius:50%
+}
+.apex-login-restricted {
+  color:#b7c3d3;
+  border:1px solid #303744
+}
+.apex-login-restricted svg {
+  width:12px;
+  height:12px
+}
+
+.login-app-story {
+  grid-column:1;
+  grid-row:2;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:#00162b
+}
+.login-story-copy {
+  padding:48px 8% 24px
+}
+.login-story-eyebrow {
+  color:#54d6fa;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.16em
+}
+.login-app-story h2 {
+  color:#f4f8ff;
+  font-size:clamp(32px,3.6vw,58px);
+  line-height:1.12;
+  font-weight:700;
+  margin:20px 0;
+  letter-spacing:-.035em
+}
+.login-story-description {
+  max-width:480px;
+  color:#bfcee1;
+  font-size:14px;
+  line-height:1.8
+}
+
+/* Show the illustration region of the approved concept, excluding its form and copy. */
+.login-onboarding-art {
+  position:relative;
+  width:100%;
+  aspect-ratio:960/440;
+  overflow:hidden
+}
+.login-onboarding-art img {
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:174.167%;
+  max-width:none;
+  height:auto
+}
+
+.apex-login .login-card-anim {
+  grid-column:2;
+  grid-row:2;
+  width:100%;
+  max-width:none;
+  margin:0;
+  background:#fafbfe;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:60px clamp(24px,4vw,72px)
+}
+.apex-login .login-card-anim>.rounded-2xl {
+  width:100%;
+  max-width:460px;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0;
+  padding:0;
+  box-shadow:none!important;
+  backdrop-filter:none!important
+}
+.apex-login .login-card-anim .text-center {
+  text-align:left
+}
+.apex-login .login-card-anim h1 {
+  font-family:Arial,sans-serif!important;
+  color:#081633!important;
+  font-size:clamp(28px,2.8vw,42px);
+  font-weight:700;
+  letter-spacing:-.035em;
+  margin-bottom:12px
+}
+.apex-login .login-card-anim .text-center>p {
+  color:#52637b!important;
+  line-height:1.7;
+  font-size:14px
+}
+.apex-login .login-workspace-badge {
+  color:#2456b7;
+  background:transparent!important;
+  border:0!important;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.16em
+}
+
+.login-auth-tabs {
+  display:flex;
+  margin-bottom:30px;
+  border-bottom:2px solid #dce2ed
+}
+.login-auth-tabs button {
+  flex:1;
+  padding:14px 4px;
+  margin-bottom:-2px;
+  color:#52637b;
+  border-bottom:3px solid transparent;
+  font-size:14px;
+  font-weight:600
+}
+.login-auth-tabs button[aria-pressed="true"] {
+  color:#0648db;
+  border-bottom-color:#0648db
+}
+
+.apex-login .login-card-anim label {
+  color:#14233e!important;
+  font-size:13px;
+  font-weight:600
+}
+.apex-login .login-card-anim input {
+  background:transparent!important;
+  color:#102a43!important;
+  border:1px solid #aebdd2!important;
+  border-radius:7px;
+  min-height:50px
+}
+.apex-login .login-card-anim input:focus {
+  border-color:#2563eb!important;
+  box-shadow:0 0 0 3px #2563eb15
+}
+.apex-login input::placeholder {
+  color:#66768e
+}
+.apex-login button:focus-visible {
+  outline:2px solid #2563eb;
+  outline-offset:4px
+}
+.apex-login .login-card-anim button[type="submit"] {
+  min-height:50px;
+  background:#0347dc!important;
+  color:#fff!important;
+  border-radius:7px;
+  margin-top:28px
+}
+.apex-login .login-card-anim button[type="submit"]:hover {
+  filter:brightness(.92)
+}
+.apex-login button:disabled {
+  opacity:.6
+}
+.apex-login [data-ocid="login.back_to_password.button"] {
+  color:#174ea6!important
+}
+.apex-login [data-ocid="login.error_state"],.apex-login [data-ocid="login.idp_error_state"] {
+  color:#b42318!important
+}
+.apex-login [data-ocid="login.idp_not_configured.error_state"] {
+  color:#854d0e!important
+}
+
+.apex-login-footer {
+  grid-column:1/-1;
+  grid-row:3;
+  padding:16px 32px;
+  border-top:1px solid #1b293e;
+  background:#060e1a;
+  color:#94a3b8;
+  font-size:10px;
+  line-height:1.7;
+  text-align:center
+}
+
+@media(max-width:900px) {
+  .apex-login {
+  grid-template-columns:1fr;
+  grid-template-rows:auto auto 1fr auto
+}
+.apex-login-header {
+  flex-wrap:wrap;
+  padding:20px 24px
+}
+.apex-login-brand {
+  flex-wrap:wrap;
+  gap:10px
+}
+.apex-login-platform {
+  font-size:12px
+}
+.login-app-story {
+  grid-column:1;
+  grid-row:2
+}
+.login-story-copy {
+  padding:36px 24px 20px
+}
+.login-app-story h2 {
+  font-size:36px
+}
+.login-onboarding-art {
+  max-height:250px
+}
+.apex-login .login-card-anim {
+  grid-column:1;
+  grid-row:3;
+  padding:40px 24px
+}
+.apex-login-footer {
+  grid-row:4;
+  padding:20px 24px
+}
+.apex-login .login-card-anim input {
+  font-size:16px
+}
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .apex-login .login-card-anim {
+  animation:none
+}
+
+}
+
+.login-story-copy  {
+   padding: 28px 8% 40px;
+ }
+
+.login-app-story h2  {
+   max-width: 540px;
+   font-size: clamp(30px, 3vw, 46px);
+ }
+
+@media (max-width: 900px)  {
+   .login-story-copy  {
+   padding: 20px 24px 28px;
+ }
+
+}
+/* Modest spacing adjustments; keep the introduction above the illustration. */
+.apex-login-header { padding-block: 16px; }
+.apex-login-footer { padding-block: 10px; }
+.login-story-copy { padding-top: 20px; padding-bottom: 20px; }
+.login-app-story h2 { margin-block: 12px; }
+.apex-login .login-card-anim { padding-block: 28px; }
+.apex-login .login-card-anim .mb-8 { margin-bottom: 20px; }
+.login-auth-tabs { margin-bottom: 20px; }
+@media (min-width: 901px) {
+  .login-onboarding-art {
+    width: min(100%, max(240px, calc((100dvh - 310px) * 2.1818)));
+    align-self: center;
+    flex-shrink: 0;
+  }
+}
+@media (max-width: 900px) {
+  .apex-login-header { padding: 10px 20px; gap: 8px; }
+  .apex-login-brand { gap: 8px; }
+  .apex-login-brand img { width: 64px; height: 26px; }
+  .apex-login-platform { font-size: 11px; }
+  .apex-login-status > span { padding: 3px 8px; font-size: 10px; }
+  .login-story-copy { padding: 12px 24px; }
+  .login-app-story h2 { font-size: 24px; margin-block: 6px; }
+  .login-story-description { font-size: 12px; line-height: 1.4; }
+  .login-onboarding-art { width: min(100%, 32dvh); align-self: center; }
+  .apex-login .login-card-anim { padding: 18px 24px; }
+  .apex-login .login-card-anim h1 { font-size: 27px; }
+  .apex-login .login-card-anim .mb-8 { margin-bottom: 12px; }
+  .apex-login .login-workspace-badge { margin-bottom: 8px; }
+  .apex-login .login-card-anim .text-center > p { font-size: 12px; }
+  .login-auth-tabs { margin-bottom: 12px; }
+  .login-auth-tabs button { padding-block: 9px; }
+  .apex-login .login-card-anim input { min-height: 44px; padding-block: 9px; }
+  .apex-login .login-card-anim button[type="submit"] { min-height: 44px; margin-top: 14px; padding-block: 9px; }
+  .apex-login-footer { padding: 8px 16px; font-size: 9px; }
+}
+/* Overlay the introduction on the illustration rather than reserving a text band. */
+.login-app-story {
+  position: relative;
+  isolation: isolate;
+  justify-content: stretch;
+}
+.login-app-story .login-story-copy {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: clamp(24px, 4vh, 44px) 8% 20px;
+  background: transparent;
+}
+.login-app-story .login-onboarding-art {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  aspect-ratio: auto;
+  align-self: stretch;
+  background: #00162b;
+}
+.login-onboarding-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.login-story-copy h2, .login-story-copy p { text-shadow: 0 2px 12px #001020; }
+@media (max-width: 900px) {
+  .login-app-story .login-onboarding-art { min-height: 280px; max-height: none; }
+  .login-app-story .login-story-copy { padding: 16px 24px; }
+  .login-onboarding-art img { object-fit: cover; }
+}
+/* Preserve every application tile while carrying the image grid behind the text. */
+.login-app-story .login-onboarding-art {
+  background-image: linear-gradient(#0d496830 1px, transparent 1px), linear-gradient(90deg, #0d496830 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.login-onboarding-art img { object-fit: contain; object-position: center bottom; }
+@media (max-width: 900px) { .login-onboarding-art img { object-fit: contain; object-position: center bottom; } }

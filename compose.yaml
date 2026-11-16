@@ -1,0 +1,65 @@
+services:
+  agent-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: onboarding
+      POSTGRES_USER: onboarding
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env before starting Docker}"
+    volumes:
+      - agent-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U onboarding -d onboarding"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+  app:
+    build:
+      context: .
+      target: runtime
+    image: saviynt-onboarder:local
+    init: true
+    restart: unless-stopped
+    depends_on:
+      agent-db:
+        condition: service_healthy
+    ports:
+      - "${APP_PORT:-3003}:3003"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3003"
+      INITIAL_ADMIN_PASSWORD: "${INITIAL_ADMIN_PASSWORD:?Set INITIAL_ADMIN_PASSWORD in .env before starting Docker}"
+      PGHOST: agent-db
+      PGPORT: "5432"
+      PGDATABASE: onboarding
+      PGUSER: onboarding
+      PGPASSWORD: "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env before starting Docker}"
+    volumes:
+      - app-data:/app/data
+      - app-documents:/app/documents
+      - app-logs:/app/logs
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  agent-db:
+  app-data:
+  app-documents:
+  app-logs:
