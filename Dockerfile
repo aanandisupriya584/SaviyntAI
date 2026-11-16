@@ -17,6 +17,7 @@ ENV NODE_ENV=production PORT=3003 HOST=0.0.0.0 \
 WORKDIR /app
 COPY --from=server-dependencies --chown=node:node /build/server/node_modules ./server/node_modules
 COPY --chown=node:node server/package.json server/server.cjs ./server/
+COPY --chown=node:node server/agents ./server/agents
 COPY --from=frontend-build --chown=node:node /build/frontend/dist ./frontend/dist
 RUN mkdir -p /app/data /app/documents /app/logs && chown node:node /app/data /app/documents /app/logs
 USER node

@@ -8,6 +8,7 @@ const http  = require("http");
 const https = require("https");
 const path = require("path");
 const fs = require("fs");
+const { runConnectorAgents } = require("./agents/index.cjs");
 
 let express, multer, archiver, bcrypt;
 try { express = require("express"); } catch { console.error("Missing express. Run: npm install --prefix server"); process.exit(1); }
@@ -20,8 +21,13 @@ try { bcrypt = require("bcryptjs"); } catch {
   console.warn("[warn] bcryptjs not found — passwords will not be hashed. Run: npm install --prefix server");
   bcrypt = null;
 }
+let pg;
+try { pg = require("pg"); } catch { console.error("Missing pg. Run: npm install --prefix server"); process.exit(1); }
 
 const app = express();
+const agentDb = (process.env.DATABASE_URL || process.env.PGHOST)
+  ? new pg.Pool(process.env.DATABASE_URL ? { connectionString: process.env.DATABASE_URL } : {})
+  : null;
 
 // ─── Paths ────────────────────────────────────────────────────────────────────
 // __dirname is the server/ folder.
@@ -323,6 +329,112 @@ app.get("/api/session", (req, res) => {
   if (!user) return res.status(401).json({ success: false });
   const { passwordHash, password, ...safeUser } = user;
   res.json({ success: true, user: safeUser });
+});
+function getAuthenticatedUser(req) {
+  const id = loginSessions.get(sessionToken(req));
+  return id && (readJSON(path.join(DATA_DIR, "users.json")) || []).find((user) => user.id === id);
+}
+function canAccessConnectorApp(user, appId) {
+  if ((user?.role || "").toLowerCase() === "admin") return true;
+  if ((user?.role || "").toLowerCase() !== "application_owner") return false;
+  if ((user.assignedAppIds || []).some((id) => String(id) === String(appId))) return true;
+  const email = (user.email || "").toLowerCase();
+  return Boolean(email && (readJSON(path.join(DATA_DIR, "apps.json")) || []).some((app) =>
+    String(app.id) === String(appId) && (app.ownerEmail || "").toLowerCase() === email,
+  ));
+}
+async function ensureConnectorAgentTable() {
+  await agentDb.query(`CREATE TABLE IF NOT EXISTS connector_agent_runs (
+    id BIGSERIAL PRIMARY KEY,
+    app_id TEXT NOT NULL,
+    run_version INTEGER NOT NULL,
+    requested_by TEXT NOT NULL,
+    result JSONB NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (app_id, run_version)
+  )`);
+}
+async function loadConnectorAgentHistory(appId) {
+  const { rows } = await agentDb.query(
+    "SELECT run_version, created_at, result FROM connector_agent_runs WHERE app_id = $1 ORDER BY run_version DESC",
+    [appId],
+  );
+  return rows.map((row) => ({
+    version: row.run_version,
+    status: row.result.status,
+    createdAt: row.created_at,
+    approval: row.result.approval || null,
+  }));
+}
+app.post("/api/connector-agents/run", async (req, res) => {
+  const user = getAuthenticatedUser(req);
+  if (!user) return res.status(401).json({ error: "Sign in to run the connector agents." });
+  if (!agentDb) return res.status(503).json({ error: "Connector agent database is available only in the Docker environment." });
+  const { appId, applicationName, version, answers } = req.body || {};
+  if (!appId || typeof appId !== "string" || appId.length > 120) return res.status(400).json({ error: "A valid application ID is required." });
+  if (!canAccessConnectorApp(user, appId)) return res.status(403).json({ error: "You do not have access to this application." });
+  try {
+    await ensureConnectorAgentTable();
+    const result = runConnectorAgents({ applicationName, version, answers });
+    const saved = await agentDb.query(
+      "INSERT INTO connector_agent_runs (app_id, run_version, requested_by, result) VALUES ($1, $2, $3, $4::jsonb) RETURNING id, created_at",
+      [appId, result.version, user.email || user.username, JSON.stringify(result)],
+    );
+    const history = await loadConnectorAgentHistory(appId);
+    return res.status(201).json({ runId: saved.rows[0].id, createdAt: saved.rows[0].created_at, ...result, history });
+  } catch (error) {
+    if (error.code === "23505") return res.status(409).json({ error: "That connector draft version already exists. Start a new version." });
+    if (error instanceof Error && error.message.includes("required")) return res.status(400).json({ error: error.message });
+    console.error("[connector-agents] run failed:", error.message);
+    return res.status(500).json({ error: "Connector agent run could not be saved to the Docker database." });
+  }
+});
+app.get("/api/connector-agents/:appId/latest", async (req, res) => {
+  const user = getAuthenticatedUser(req);
+  if (!user) return res.status(401).json({ error: "Sign in to view connector agent results." });
+  if (!canAccessConnectorApp(user, req.params.appId)) return res.status(403).json({ error: "You do not have access to this application." });
+  if (!agentDb) return res.status(503).json({ error: "Connector agent database is available only in the Docker environment." });
+  try {
+    await ensureConnectorAgentTable();
+    const result = await agentDb.query(
+      "SELECT id, created_at, result FROM connector_agent_runs WHERE app_id = $1 ORDER BY run_version DESC LIMIT 1",
+      [req.params.appId],
+    );
+    if (!result.rowCount) return res.status(404).json({ error: "No agent run is stored for this application." });
+    const history = await loadConnectorAgentHistory(req.params.appId);
+    return res.json({ runId: result.rows[0].id, createdAt: result.rows[0].created_at, ...result.rows[0].result, history });
+  } catch (error) {
+    console.error("[connector-agents] lookup failed:", error.message);
+    return res.status(500).json({ error: "Connector agent results could not be loaded from the Docker database." });
+  }
+});
+app.post("/api/connector-agents/:appId/approve", async (req, res) => {
+  const user = getAuthenticatedUser(req);
+  if (!user) return res.status(401).json({ error: "Sign in to approve a connector draft." });
+  if (user.role !== "admin") return res.status(403).json({ error: "Only an administrator can approve a connector draft." });
+  if (!agentDb) return res.status(503).json({ error: "Connector agent database is available only in the Docker environment." });
+  const version = Number(req.body?.version);
+  if (!Number.isInteger(version) || version < 1) return res.status(400).json({ error: "A valid draft version is required." });
+  try {
+    await ensureConnectorAgentTable();
+    const selected = await agentDb.query(
+      "SELECT result FROM connector_agent_runs WHERE app_id = $1 AND run_version = $2 FOR UPDATE",
+      [req.params.appId, version],
+    );
+    if (!selected.rowCount) return res.status(404).json({ error: "That connector draft version was not found." });
+    const result = selected.rows[0].result;
+    if (result.validation?.status !== "passed") return res.status(409).json({ error: "Connector validation must pass before approval." });
+    const approval = { version, approvedBy: user.email || user.username, approvedAt: new Date().toISOString() };
+    const updated = { ...result, status: "approved", approval };
+    await agentDb.query(
+      "UPDATE connector_agent_runs SET result = $3::jsonb WHERE app_id = $1 AND run_version = $2",
+      [req.params.appId, version, JSON.stringify(updated)],
+    );
+    return res.json({ approval, status: "approved" });
+  } catch (error) {
+    console.error("[connector-agents] approval failed:", error.message);
+    return res.status(500).json({ error: "Approval could not be recorded in the Docker database." });
+  }
 });
 app.post("/api/logout", (req, res) => {
   loginSessions.delete(sessionToken(req));
@@ -1768,7 +1880,10 @@ function shutdown(signal) {
   if (shuttingDown) return;
   shuttingDown = true;
   console.log(`${signal}: shutting down HTTP server`);
-  server.close(() => process.exit(0));
+  server.close(async () => {
+    try { await agentDb?.end(); } catch {}
+    process.exit(0);
+  });
   setTimeout(() => process.exit(1), 10000).unref();
 }
 process.on("SIGTERM", () => shutdown("SIGTERM"));

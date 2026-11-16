@@ -51,7 +51,7 @@ cp .env.example .env
 Copy-Item .env.example .env
 ```
 
-Edit `.env`, replacing `INITIAL_ADMIN_PASSWORD`. Then:
+Edit `.env`, replacing `INITIAL_ADMIN_PASSWORD` and `POSTGRES_PASSWORD`. Then:
 
 ```sh
 docker compose up -d --build
@@ -83,11 +83,17 @@ drops Linux capabilities, limits container log size, and mounts writable named v
 | `app-data` | Users, applications, settings, and email records |
 | `app-documents` | Uploaded integration specifications |
 | `app-logs` | Onboarding and integration logs |
+| `agent-db` | PostgreSQL connector-agent runs and exact-version approvals |
 
 Local data, credentials, uploads, test artifacts, and `.env` are excluded from the build
 context. Docker starts with separate data; it does not automatically copy your local data.
-Back up all three volumes before moving or replacing a deployment. Do not use
+Back up all four volumes before moving or replacing a deployment. Do not use
 `docker compose down -v` unless you intend to delete that deployment's data.
+
+The PostgreSQL service has no published host port and is reachable only by the app on
+Compose's private network. Connector-agent runs and approvals are stored there. The
+local Node server has no database connection, so agent endpoints are available only in
+the Docker deployment.
 
 For a shared deployment, terminate HTTPS at your reverse proxy/load balancer and restrict
 network access according to your environment. The container packaging does not replace
@@ -107,6 +113,7 @@ so a restart requires login and multiple replicas require a shared session-store
 | `INITIAL_ADMIN_PASSWORD` | Local development default | Password for first account creation |
 | `APP_PORT` | `3003` | Compose host port |
 | `API_PORT` | `3004` | Backend port for `npm run dev` |
+| `POSTGRES_PASSWORD` | Required in `.env` | Password for the private Docker PostgreSQL service |
 
 `.env` is read by Compose. For local Node commands, set environment variables in your shell.
 The frontend uses the same-origin Express API on every hostname. The original browser-only

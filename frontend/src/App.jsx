@@ -830,16 +830,10 @@ function AppInner() {
         )}
         {currentView === "applications" &&
           (() => {
-            const visibleApps =
-              currentUser.role === "application_owner"
-                ? apps.filter(
-                    (app) =>
-                      currentUser.assignedAppIds.includes(app.id) ||
-                      (app.ownerEmail &&
-                        app.ownerEmail.toLowerCase() ===
-                          currentUser.email.toLowerCase()),
-                  )
-                : apps;
+            const visibleApps = currentUser.role === "application_owner"
+              ? apps.filter((app) => currentUser.assignedAppIds.includes(app.id)
+                || (app.ownerEmail && app.ownerEmail.toLowerCase() === currentUser.email.toLowerCase()))
+              : apps;
             return (
               <Applications
                 apps={visibleApps}
@@ -891,6 +885,7 @@ function AppInner() {
       {editingApp && (
         <ApplicationDetailsModal
           app={editingApp}
+          currentUser={currentUser}
           initialTab={editingTab}
           onTabChange={setEditingTab}
           onClose={() => setEditingApp(null)}

@@ -8,6 +8,8 @@
     "build": "npm run build --prefix frontend",
     "start": "node server/server.cjs",
     "test": "playwright test",
+    "test:agents": "node --test tests/connector-agents.test.cjs",
+    "test:docker-agent": "node tests/docker-agent-smoke.cjs",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d --build",
     "docker:down": "docker compose down"

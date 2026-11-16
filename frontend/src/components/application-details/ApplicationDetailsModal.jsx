@@ -2,6 +2,7 @@ import { AIPatternBadge, OOTBBadge, StatusBadge } from "../common/Badges.jsx";
 import { CustomIntegrationEndpoints } from "./CustomIntegrationEndpoints.jsx";
 import { FormLabel } from "../common/FormLabel.jsx";
 import { IntegrationSpecTab } from "./IntegrationSpecTab.jsx";
+import { ConnectorIntakeAgent } from "./ConnectorIntakeAgent.jsx";
 import { JMLScenario } from "./JMLScenario.jsx";
 import {
   SAVIYNT_EIC_CONNECTOR,
@@ -28,6 +29,7 @@ import {
 import { useTheme } from "../../contexts/ThemeContext.jsx";
 function ApplicationDetailsModal({
   app,
+  currentUser,
   initialTab = 0,
   onTabChange,
   onClose,
@@ -2787,6 +2789,17 @@ Network error: ${msg}`,
                 gap: 16,
               }}
             >
+              <ConnectorIntakeAgent
+                app={app}
+                currentUser={currentUser}
+                onUpdate={onUpdate}
+                isDark={isDark}
+                border={border}
+                cardBg={cardBg}
+                titleColor={titleColor}
+                textColor={textColor}
+                mutedColor={mutedColor}
+              />
               <div
                 style={{
                   background: cardBg,

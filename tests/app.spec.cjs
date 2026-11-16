@@ -29,6 +29,9 @@ async function mockApp(page, options = {}) {
     if (endpoint === '/api/session') {
       return route.fulfill({ status: authenticated ? 200 : 401, json: { success: authenticated, user: authenticated ? user : undefined } });
     }
+    if (!post && /^\/api\/connector-agents\/[^/]+\/latest$/.test(endpoint)) {
+      return route.fulfill({ status: 404, json: { error: 'No agent run is stored for this application.' } });
+    }
     if (endpoint === '/api/login') { authenticated = true; response = { success: true, user }; }
     else if (endpoint === '/api/logout') { authenticated = false; response = { success: true }; }
     else if (endpoint === '/api/apps') { if (post) apps = request.postDataJSON(); response = post ? { success: true } : apps; }
@@ -138,4 +141,43 @@ test('backend login, cookie session, document upload and logout on isolated stor
   expect(upload.ok()).toBe(true);
   await request.post('/api/logout');
   expect((await request.get('/api/session')).status()).toBe(401);
+});
+
+test('guided connector questionnaire runs agents and gates exact-version approval', async ({ page }) => {
+  await mockApp(page);
+  const result = {
+    runId: 77, createdAt: new Date().toISOString(), version: 1,
+    status: 'ready_for_sme_review',
+    safeAnswers: { baseUrl: 'https://api.example.test/v1', authType: 'OAuth 2.0 client credentials', users: '/users', groups: '/groups', pagination: 'Page number', provisioning: 'Read accounts only', contact: 'owner@example.test', hasOpenApi: true, hasSample: true },
+    validation: { status: 'passed', errors: [] },
+    connectorConfig: { name: 'Test REST connector', version: 1, baseUrl: 'https://api.example.test/v1', operations: [{ name: 'accounts', method: 'GET', path: '/users' }] },
+    agents: {
+      intake: { agent: 'intake', status: 'ready_for_analysis', gaps: [] },
+      analysis: { agent: 'analysis', status: 'ready_for_mapping', endpoints: { accounts: { method: 'GET', path: '/users' } } },
+      mapping: { agent: 'mapping', status: 'review_required', mappings: [{ source: 'users[0].id', target: 'accountId' }] },
+      documentation: { agent: 'documentation', status: 'ready_for_review', runbook: '# Test connector handoff' },
+    },
+  };
+  await page.route('**/api/connector-agents/run', route => route.fulfill({ status: 201, json: result }));
+  await page.route('**/api/connector-agents/*/approve', route => route.fulfill({ json: { status: 'approved', approval: { version: 1, approvedBy: 'admin@example.com', approvedAt: new Date().toISOString() } } }));
+  await page.goto('/');
+  await page.locator('[data-ocid="nav.applications_button"]').click();
+  await page.locator('[data-ocid="apps.edit_button.1"]').click();
+  await page.locator('[data-ocid="details.tab.ai"]').click();
+  await page.locator('[data-ocid="connector_agent.base_url_input"]').fill('https://api.example.test/v1');
+  await page.locator('[data-ocid="connector_agent.next_button"]').click();
+  await page.locator('[data-ocid="connector_agent.next_button"]').click();
+  await page.locator('[data-ocid="connector_agent.next_button"]').click();
+  await page.locator('[data-ocid="connector_agent.next_button"]').click();
+  await page.getByLabel('Technical contact email').fill('owner@example.test');
+  await page.locator('[data-ocid="connector_agent.next_button"]').click();
+  await page.locator('textarea').nth(0).fill('{"openapi":"3.0.0","paths":{"/users":{"get":{}}}}');
+  await page.locator('textarea').nth(1).fill('{"users":[{"id":"sample"}]}');
+  const runResponsePromise = page.waitForResponse(response => response.url().endsWith('/api/connector-agents/run'));
+  await page.locator('[data-ocid="connector_agent.next_button"]').click();
+  expect((await runResponsePromise).status()).toBe(201);
+  await expect(page.locator('[data-ocid="connector_agent.results"]')).toContainText('Agent results');
+  await expect(page.locator('[data-ocid="connector_agent.draft"]')).toContainText('v1');
+  await page.locator('[data-ocid="connector_agent.approve_button"]').click();
+  await expect(page.locator('[data-ocid="connector_agent.draft"]')).toContainText('APPROVED VERSION');
 });
